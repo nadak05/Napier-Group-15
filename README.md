@@ -1,0 +1,1 @@
+murray hit the second tower.
