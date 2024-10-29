@@ -1,0 +1,17 @@
+@startuml
+
+actor User as "Organization End-User"
+
+rectangle Database
+
+rectangle "Population Reporting System" {
+    usecase UC3 as "Generate Custom Report"
+
+    usecase UC3a as "Specify Top N Most Populated"
+
+    User - UC3
+    UC3 ..> UC3a : include
+    UC3 - Database
+}
+
+@enduml

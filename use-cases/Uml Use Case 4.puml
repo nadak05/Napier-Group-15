@@ -1,0 +1,14 @@
+@startuml
+
+actor TeamMember as "Team Member"
+
+rectangle "Team Collaboration System" {
+    usecase UC4 as "Update Contribution Records"
+
+    usecase UC4a as "Submit Records to Moodle"
+
+    TeamMember - UC4
+    UC4 ..> UC4a : include
+}
+
+@enduml
