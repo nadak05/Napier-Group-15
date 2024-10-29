@@ -5,11 +5,11 @@ FROM mysql:8.3
 WORKDIR /tmp
 
 # Copy the world.sql file to the working directory of the container
-COPY db/world.sql /tmp/
+COPY world.sql /tmp/
 
 # Copy the main SQL file to docker-entrypoint-initdb.d
 # This file will initialize the database when the container starts
-COPY db/world.sql /docker-entrypoint-initdb.d/
+COPY world.sql /docker-entrypoint-initdb.d/
 
 # Set the root password
-ENV MYSQL_ROOT_PASSWORD example
+ENV MYSQL_ROOT_PASSWORD=Password
