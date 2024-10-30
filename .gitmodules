@@ -1,0 +1,3 @@
+[submodule "db/napier_world"]
+	path = db/napier_world
+	url = https://github.com/nadak05/Napier-Group-15
