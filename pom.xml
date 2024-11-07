@@ -41,7 +41,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>app</mainClass>
+                            <mainClass>App</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
