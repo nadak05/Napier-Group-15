@@ -1,0 +1,17 @@
+@startuml
+
+actor User as "Organization End-User"
+
+rectangle Database
+
+rectangle "Population Reporting System" {
+    usecase UC1 as "Generate Country Report"
+
+    usecase UC1a as "Filter by Continent or Region"
+
+    User - UC1
+    UC1 ..> UC1a : include
+    UC1 - Database
+}
+
+@enduml
