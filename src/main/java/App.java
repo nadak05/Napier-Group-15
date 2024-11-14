@@ -15,6 +15,7 @@ public class App {
         App a = new App();
 
         if (args.length < 1) {
+            System.out.println("Usage test");
             a.connect("localhost:33060", 0);
         } else {
             a.connect(args[0], Integer.parseInt(args[1]));
