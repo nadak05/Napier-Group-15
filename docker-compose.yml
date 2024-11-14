@@ -4,8 +4,7 @@ services:
     build: .  # Build context is the root of the project for the app
 
   db:
-    build:
-      context: ./db  # Points to the db folder, where the Dockerfile is located
+    build: db/.  # Points to the db folder, where the Dockerfile is located
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     ports:

@@ -18,6 +18,7 @@ public class App {
             a.connect("localhost:33060", 0);
         } else {
             a.connect(args[0], Integer.parseInt(args[1]));
+            System.out.println("check " + args[0] + " " + args[1]);
         }
 
         a.report2();

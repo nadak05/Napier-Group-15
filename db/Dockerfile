@@ -6,5 +6,5 @@ FROM mysql:8.3
 COPY world.sql /docker-entrypoint-initdb.d/
 
 # Set the root password
-ENV MYSQL_ROOT_PASSWORD=Password
+ENV MYSQL_ROOT_PASSWORD=example
 
