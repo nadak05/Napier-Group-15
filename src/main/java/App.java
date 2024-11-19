@@ -22,30 +22,33 @@ public class App {
             System.out.println("check " + args[0] + " " + args[1]);
         }
 
-        a.report1();
+        a.report2();
 
         // Disconnect from database
         a.disconnect();
     }
 
-    public void report1() throws IOException {
+    public void report2() throws IOException {
         StringBuilder sb = new StringBuilder();
         try {
             // Create an SQL statement
             Statement stmt = con.createStatement();
             // Create string for SQL statement
-            String sql = "select name, population from country order by population desc";
+            String sql = "SELECT region, SUM(population) AS total_population " +
+                    "FROM country " +
+                    "GROUP BY region " +
+                    "ORDER BY total_population DESC";
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(sql);
             //cycle
             while (rset.next()) {
-                String name = rset.getString("name");
-                Integer population = rset.getInt("population");
-                sb.append(name + "\t" + population + "\r\n");
+                String region = rset.getString("region");
+                Integer totalPopulation = rset.getInt("total_population");
+                sb.append(region + "\t" + totalPopulation + "\r\n");
             }
             new File("./output/").mkdir();
             BufferedWriter writer = new BufferedWriter(
-                    new FileWriter(new File("./output/report1.txt")));
+                    new FileWriter(new File("./output/report2.txt")));
             writer.write(sb.toString());
             writer.close();
             System.out.println(sb.toString());
