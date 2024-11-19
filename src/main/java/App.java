@@ -63,7 +63,7 @@ public class App {
      *
      * @param conString
      * 		Use db:3306 for docker and localhost:33060 for local or Integration
-     * 		Tests
+     * 		Tests TEST
      * @param
      */
     public void connect(String conString, int delay) {
