@@ -22,19 +22,19 @@ public class App {
             System.out.println("check " + args[0] + " " + args[1]);
         }
 
-        a.report2();
+        a.report1();
 
         // Disconnect from database
         a.disconnect();
     }
 
-    public void report2() throws IOException {
+    public void report1() throws IOException {
         StringBuilder sb = new StringBuilder();
         try {
             // Create an SQL statement
             Statement stmt = con.createStatement();
             // Create string for SQL statement
-            String sql = "select * from country";
+            String sql = "select name, population from country order by population desc";
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(sql);
             //cycle
