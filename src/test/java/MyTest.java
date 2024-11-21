@@ -5,8 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class MyTest
 {
     @Test
-    void unitTest()
+    public void unitTest() throws Exception
     {
-        assertEquals(5, 5);
+        System.out.println("hello world");
+        String[] args = null;
+
+        assertEquals(0,App.hello());
     }
 }
