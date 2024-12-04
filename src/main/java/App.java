@@ -6,6 +6,12 @@ import java.sql.*;
 
 public class App {
 
+
+    public static int hello()
+    {
+        System.out.println("hello world");
+        return 0;
+    }
     /**
      * Connection to MySQL database.
      */

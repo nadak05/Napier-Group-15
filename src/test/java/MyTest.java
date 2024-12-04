@@ -5,8 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class MyTest
 {
     @Test
-    void unitTest()
+    public void unitTest() throws Exception
     {
-        assertEquals(5, 5);
+
+        assertEquals(0,App.hello());
     }
 }
