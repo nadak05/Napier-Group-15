@@ -10,6 +10,7 @@ public class App {
      * Connection to MySQL database.
      */
     private Connection con = null;
+
     public static void main(String[] args) throws IOException {
         // Create new Application
         App a = new App();
@@ -23,6 +24,7 @@ public class App {
         }
 
         a.report1();
+        a.report2();
 
         // Disconnect from database
         a.disconnect();
@@ -33,19 +35,54 @@ public class App {
         try {
             // Create an SQL statement
             Statement stmt = con.createStatement();
+            // Create string for SQL statement to get name and population ordered by population descending
+            String sql = "SELECT name, population FROM country ORDER BY population DESC";
+            // Execute SQL statement
+            ResultSet rset = stmt.executeQuery(sql);
+            // Cycle through result set and build output
+            while (rset.next()) {
+                String name = rset.getString("name");
+                int population = rset.getInt("population");
+                sb.append(name + "\t" + population + "\r\n");
+            }
+            // Create output directory if not exists
+            new File("./output/").mkdir();
+            // Write the result to a file
+            BufferedWriter writer = new BufferedWriter(
+                    new FileWriter(new File("./output/report.txt")));
+            writer.write(sb.toString());
+            writer.close();
+            System.out.println(sb.toString()); // Print output to console
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get details");
+            return;
+        }
+
+        System.out.println(sb.toString()); // Print output to console
+    }
+
+    public void report2() throws IOException {
+        StringBuilder sb = new StringBuilder();
+        try {
+            // Create an SQL statement
+            Statement stmt = con.createStatement();
             // Create string for SQL statement
-            String sql = "select name, population from country order by population desc";
+            String sql = "SELECT region, SUM(population) AS total_population " +
+                    "FROM country " +
+                    "GROUP BY region " +
+                    "ORDER BY total_population DESC";
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(sql);
             //cycle
             while (rset.next()) {
-                String name = rset.getString("name");
-                Integer population = rset.getInt("population");
-                sb.append(name + "\t" + population + "\r\n");
+                String region = rset.getString("region");
+                Integer totalPopulation = rset.getInt("total_population");
+                sb.append(region + "\t" + totalPopulation + "\r\n");
             }
             new File("./output/").mkdir();
             BufferedWriter writer = new BufferedWriter(
-                    new FileWriter(new File("./output/report1.txt")));
+                    new FileWriter(new File("./output/report2.txt")));
             writer.write(sb.toString());
             writer.close();
             System.out.println(sb.toString());
