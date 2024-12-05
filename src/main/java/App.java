@@ -16,7 +16,7 @@ public class App {
         // Create new Application
         App a = new App();
 
-        if (args.length < 2) {
+        if (args.length < 1) {
             System.out.println("Usage test");
             a.connect("localhost:33060", 0);
         } else {
@@ -24,15 +24,19 @@ public class App {
             System.out.println("check " + args[0] + " " + args[1]);
         }
 
-        a.report1(Integer.parseInt(args[0]));
+        a.report1();
 
         // Disconnect from database
         a.disconnect();
     }
 
-    public void report1(int inputN) throws IOException {
+    public void report1() throws IOException {
         StringBuilder sb = new StringBuilder();
         try {
+            Scanner recieveN = new Scanner(System.in);
+            System.out.println("Enter N: ");
+
+            String inputN = recieveN.nextLine();
             // Create an SQL statement
             Statement stmt = con.createStatement();
             // Create string for SQL statement to get name and population ordered by population descending
