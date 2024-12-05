@@ -10,6 +10,7 @@ public class App {
      * Connection to MySQL database.
      */
     private Connection con = null;
+
     public static void main(String[] args) throws IOException {
         // Create new Application
         App a = new App();
@@ -22,10 +23,43 @@ public class App {
             System.out.println("check " + args[0] + " " + args[1]);
         }
 
+        a.report1();
         a.report2();
 
         // Disconnect from database
         a.disconnect();
+    }
+
+    public void report1() throws IOException {
+        StringBuilder sb = new StringBuilder();
+        try {
+            // Create an SQL statement
+            Statement stmt = con.createStatement();
+            // Create string for SQL statement to get name and population ordered by population descending
+            String sql = "SELECT name, population FROM country ORDER BY population DESC";
+            // Execute SQL statement
+            ResultSet rset = stmt.executeQuery(sql);
+            // Cycle through result set and build output
+            while (rset.next()) {
+                String name = rset.getString("name");
+                int population = rset.getInt("population");
+                sb.append(name + "\t" + population + "\r\n");
+            }
+            // Create output directory if not exists
+            new File("./output/").mkdir();
+            // Write the result to a file
+            BufferedWriter writer = new BufferedWriter(
+                    new FileWriter(new File("./output/report.txt")));
+            writer.write(sb.toString());
+            writer.close();
+            System.out.println(sb.toString()); // Print output to console
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get details");
+            return;
+        }
+
+        System.out.println(sb.toString()); // Print output to console
     }
 
     public void report2() throws IOException {
@@ -65,9 +99,8 @@ public class App {
      * Connect to the MySQL database.
      *
      * @param conString
-     * 		Use db:3306 for docker and localhost:33060 for local or Integration
-     * 		Tests TEST
-     * @param
+     * 		Use db:3306 for docker and localhost:33060 for local or Integration Tests TEST
+     * @param delay
      */
     public void connect(String conString, int delay) {
         try {
@@ -85,22 +118,19 @@ public class App {
                 // Wait a bit for db to start
                 Thread.sleep(delay);
                 // Connect to database
-                //Added allowPublicKeyRetrieval=true to get Integration Tests
-                // to work. Possibly due to accessing from another class?
                 con = DriverManager.getConnection("jdbc:mysql://" + conString
-                        + "/world?allowPublicKeyRetrieval=true&useSSL"
-                        + "=false", "root", "example");
+                        + "/world?allowPublicKeyRetrieval=true&useSSL=false", "root", "example");
                 System.out.println("Successfully connected");
                 break;
             } catch (SQLException sqle) {
-                System.out.println("Failed to connect to database attempt "
-                        + Integer.toString(i));
+                System.out.println("Failed to connect to database attempt " + i);
                 System.out.println(sqle.getMessage());
             } catch (InterruptedException ie) {
                 System.out.println("Thread interrupted? Should not happen.");
             }
         }
     }
+
     /**
      * Disconnect from the MySQL database.
      */
@@ -109,7 +139,7 @@ public class App {
             try {
                 // Close connection
                 con.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.out.println("Error closing connection to database");
             }
         }
