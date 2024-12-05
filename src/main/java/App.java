@@ -22,41 +22,57 @@ public class App {
             System.out.println("check " + args[0] + " " + args[1]);
         }
 
-        a.report1();
+        a.report3();
 
         // Disconnect from database
         a.disconnect();
     }
 
-    public void report1() throws IOException {
+    public void report3() throws IOException {
         StringBuilder sb = new StringBuilder();
         try {
             // Create an SQL statement
             Statement stmt = con.createStatement();
-            // Create string for SQL statement
-            String sql = "select name, population from country order by population desc";
+
+            // Create SQL query to get continents and their total population
+            String sql = "SELECT continent, SUM(population) AS total_population " +
+                    "FROM country " +
+                    "GROUP BY continent " +
+                    "ORDER BY total_population DESC";
+
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(sql);
-            //cycle
+
+            // Loop through the result set
             while (rset.next()) {
-                String name = rset.getString("name");
-                Integer population = rset.getInt("population");
-                sb.append(name + "\t" + population + "\r\n");
+                String continent = rset.getString("continent");
+                long totalPopulation = rset.getLong("total_population"); // Use getLong instead of getInt
+                sb.append(continent).append("\t").append(totalPopulation).append("\r\n");
             }
+
+            // Create output directory if it doesn't exist
             new File("./output/").mkdir();
+
+            // Write the result to a file
             BufferedWriter writer = new BufferedWriter(
-                    new FileWriter(new File("./output/report1.txt")));
+                    new FileWriter(new File("./output/report3.txt")));
             writer.write(sb.toString());
             writer.close();
+
+            // Print the result to the console
             System.out.println(sb.toString());
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("Failed to get details");
             return;
         }
 
+        // Print the result to the console again, if needed
         System.out.println(sb.toString());
     }
+
+
 
     /**
      * Connect to the MySQL database.
