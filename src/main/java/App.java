@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
+import java.util.Scanner;
 
 public class App {
 
@@ -15,7 +16,7 @@ public class App {
         // Create new Application
         App a = new App();
 
-        if (args.length < 1) {
+        if (args.length < 2) {
             System.out.println("Usage test");
             a.connect("localhost:33060", 0);
         } else {
@@ -23,19 +24,19 @@ public class App {
             System.out.println("check " + args[0] + " " + args[1]);
         }
 
-        a.report1();
+        a.report1(Integer.parseInt(args[0]));
 
         // Disconnect from database
         a.disconnect();
     }
 
-    public void report1() throws IOException {
+    public void report1(int inputN) throws IOException {
         StringBuilder sb = new StringBuilder();
         try {
             // Create an SQL statement
             Statement stmt = con.createStatement();
             // Create string for SQL statement to get name and population ordered by population descending
-            String sql = "SELECT name, population FROM country ORDER BY population DESC";
+            String sql = String.format("SELECT name, population FROM country ORDER BY population DESC LIMIT %s", inputN);
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(sql);
             // Cycle through result set and build output
