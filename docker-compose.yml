@@ -4,9 +4,8 @@ services:
     build: .  # Build context is the root of the project for the app
 
   db:
-    build:
-      context: ./db  # Points to the db folder, where the Dockerfile is located
-    volumes:
-      - ./db/world.sql:/docker-entrypoint-initdb.d/world.sql  # Map the SQL file for initialization
+    build: db/.  # Points to the db folder, where the Dockerfile is located
     command: --default-authentication-plugin=mysql_native_password
     restart: always
+    ports:
+      - "33060:3306"
